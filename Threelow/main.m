@@ -9,45 +9,72 @@
 #import <Foundation/Foundation.h>
 #import "Dice.h"
 #import "InputHandler.h"
+#import "GameController.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-//        BOOL gameOn = YES;
-//
-//        do {
+        BOOL rollAgain = YES;
+        // dice symbols: 1: ⚀ 2: ⚁ 3: ⚂ 4: ⚃ 5: ⚄ 6: ⚅
+    
+        // initiate instance of gamecontroller with dice
+        GameController *gameController = [[GameController alloc] init];
+        NSLog(@"Threelow!!! \n---RULES---\ntype <roll> to roll again\ntype <hold ###> to hold or unhold dice with the corresponding index\ntype reset to unhold all dice");
         
-            BOOL rollAgain = YES;
-            // dice symbols: 1: ⚀ 2: ⚁ 3: ⚂ 4: ⚃ 5: ⚄ 6: ⚅
+        while (rollAgain) {
             
-            // make 5 instances of dice
-            Dice *dice1 = [[Dice alloc] init];
-            Dice *dice2 = [[Dice alloc] init];
-            Dice *dice3 = [[Dice alloc] init];
-            Dice *dice4 = [[Dice alloc] init];
-            Dice *dice5 = [[Dice alloc] init];
-        
-            NSMutableArray *allDice = [[NSMutableArray alloc] initWithObjects: dice1, dice2, dice3, dice4, dice5, nil];
-            NSMutableSet *heldDice = [[NSMutableSet alloc] init];
-            heldDice = [NSMutableSet setWithArray:allDice];
-        
-            do {
-                //randomize values for dice
-                for (Dice *dice in allDice) {
-                    [dice randomize];
+            // read user input to see if they want to hold and or roll again
+            NSString *userInput = [InputHandler handle];
+            
+            if ([userInput hasPrefix: @"hold"]) {
+                if ([userInput length] >4) {
+                    // adds or removes die from hold depending on index given
+                    NSString *heldDice = [userInput substringFromIndex: 5];
+                    [gameController holdDie: heldDice];
+                    
+                    // prints out all dice showing holds
+                    
+                    NSArray *holdList = [gameController.heldDice allKeys];
+                    NSMutableString *holdString = [[NSMutableString alloc] init];
+                    
+                    for ( NSString * leString in holdList) {
+                        [holdString appendString:leString];
+                    }
+                    
+                    for (int i = 0; i < 5 ; i++) {
+                        if ([gameController.heldDice count]) {
+                            if ( [holdString localizedStandardContainsString: [NSString stringWithFormat: @"%d", i]]) {
+                                
+                                NSLog(@"[%d]", [gameController.allDice[i] currentValue]);
+                            }
+                            else {
+                                NSLog(@"%d", [gameController.allDice[i] currentValue]);
+                            }
+                        }
+                        else {
+                            NSLog(@"%d", [gameController.allDice[i] currentValue]);
+                        }
+                    }
                 }
+            }
+            else if ([userInput compare: @"reset"] == NSOrderedSame) {
+                // unhold all dice
+                [gameController resetDice];
+                // print values
+                for (Dice *die in gameController.allDice) {
+                    NSLog(@"%d ", die.currentValue);
+                }
+            }
+            else if ([userInput compare: @"roll"] == NSOrderedSame) {
                 
-                // print values for five dice
-                NSLog(@"Values for five dice: %d, %d, %d, %d, %d", dice1.currentValue, dice2.currentValue, dice3.currentValue, dice4.currentValue, dice5.currentValue);
-                //read user input to see if they want to roll again
-                NSString *userInput = [InputHandler handle];
-            
-                rollAgain = [userInput compare: @"roll"] == NSOrderedSame ? YES : NO;
-                
-            } while (rollAgain);
-            
-//        } while  (gameOn);
-//
+                // randomize values for dice and print values
+                for (Dice *die in gameController.allDice) {
+                    
+                    [die randomize];
+                    NSLog(@"%d ", die.currentValue);
+                }
+            }
+        }
     }
     return 0;
 }
