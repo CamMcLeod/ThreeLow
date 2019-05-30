@@ -46,4 +46,14 @@
     [self.heldDice removeAllObjects];
 }
 
+-(NSInteger)calculateScore {
+    self.currentScore = 0;
+    for ( NSString * key in self.heldDice) {
+        if ( !([[self.heldDice objectForKey:key] currentValue] == 3)) {
+            self.currentScore = self.currentScore + [[self.heldDice objectForKey:key] currentValue];
+        }
+    }
+    return self.currentScore;
+}
+
 @end

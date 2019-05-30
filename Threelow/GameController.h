@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void) holdDie: (NSString *)diceIndexes;
 -(void) resetDice;
+-(NSInteger)calculateScore;
     
 @end
 

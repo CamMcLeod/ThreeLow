@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6282F12F229FD037004CCF1D /* GameController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6282F12C229FD037004CCF1D /* GameController.m */; };
+		6282F130229FD037004CCF1D /* InputHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6282F12D229FD037004CCF1D /* InputHandler.m */; };
 		62E5ABF7229F2AB500A37458 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E5ABF6229F2AB500A37458 /* main.m */; };
 		62E5ABFF229F2D1600A37458 /* Dice.m in Sources */ = {isa = PBXBuildFile; fileRef = 62E5ABFE229F2D1600A37458 /* Dice.m */; };
 /* End PBXBuildFile section */
@@ -24,6 +26,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6282F12B229FD037004CCF1D /* GameController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameController.h; sourceTree = "<group>"; };
+		6282F12C229FD037004CCF1D /* GameController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameController.m; sourceTree = "<group>"; };
+		6282F12D229FD037004CCF1D /* InputHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InputHandler.m; sourceTree = "<group>"; };
+		6282F12E229FD037004CCF1D /* InputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputHandler.h; sourceTree = "<group>"; };
 		62E5ABF3229F2AB500A37458 /* Threelow */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Threelow; sourceTree = BUILT_PRODUCTS_DIR; };
 		62E5ABF6229F2AB500A37458 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		62E5ABFD229F2D1600A37458 /* Dice.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dice.h; sourceTree = "<group>"; };
@@ -63,6 +69,10 @@
 				62E5ABF6229F2AB500A37458 /* main.m */,
 				62E5ABFD229F2D1600A37458 /* Dice.h */,
 				62E5ABFE229F2D1600A37458 /* Dice.m */,
+				6282F12B229FD037004CCF1D /* GameController.h */,
+				6282F12C229FD037004CCF1D /* GameController.m */,
+				6282F12E229FD037004CCF1D /* InputHandler.h */,
+				6282F12D229FD037004CCF1D /* InputHandler.m */,
 			);
 			path = Threelow;
 			sourceTree = "<group>";
@@ -123,8 +133,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6282F12F229FD037004CCF1D /* GameController.m in Sources */,
 				62E5ABFF229F2D1600A37458 /* Dice.m in Sources */,
 				62E5ABF7229F2AB500A37458 /* main.m in Sources */,
+				6282F130229FD037004CCF1D /* InputHandler.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

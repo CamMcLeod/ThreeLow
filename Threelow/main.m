@@ -67,12 +67,31 @@ int main(int argc, const char * argv[]) {
             }
             else if ([userInput compare: @"roll"] == NSOrderedSame) {
                 
-                // randomize values for dice and print values
-                for (Dice *die in gameController.allDice) {
-                    
-                    [die randomize];
-                    NSLog(@"%d ", die.currentValue);
+                // check hold list
+                NSArray *holdList = [gameController.heldDice allKeys];
+                NSMutableString *holdString = [[NSMutableString alloc] init];
+                
+                for ( NSString * leString in holdList) {
+                    [holdString appendString:leString];
                 }
+                
+                for (int i = 0; i < 5 ; i++) {
+                    if ([gameController.heldDice count]) {
+                        if ( [holdString localizedStandardContainsString: [NSString stringWithFormat: @"%d", i]]) {
+                            
+                            NSLog(@"[%d]", [gameController.allDice[i] currentValue]);
+                        }
+                        else {
+                            [gameController.allDice[i] randomize];
+                            NSLog(@"%d", [gameController.allDice[i] currentValue]);
+                        }
+                    }
+                    else {
+                        [gameController.allDice[i] randomize];
+                        NSLog(@"%d", [gameController.allDice[i] currentValue]);
+                    }
+                }
+                NSLog(@"current score: %ld", [gameController calculateScore]);
             }
         }
     }
