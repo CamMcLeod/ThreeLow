@@ -20,7 +20,7 @@ int main(int argc, const char * argv[]) {
         
         // initiate instance of gamecontroller with NUMDICE dice
         GameController *gameController = [[GameController alloc] init];
-        NSLog(@"Threelow!!! \n---RULES---\ntype <roll> to roll again\ntype <hold ###> to hold or unhold dice with the corresponding index\ntype reset to unhold all dice");
+        NSLog(@"Threelow!!! \n---RULES---\ntype <roll> to roll again\ntype <hold ###> to hold or unhold dice with the corresponding index\ntype reset to unhold all dice\nheld dice appear on upper row");
         
         while (rollAgain) {
             
@@ -28,6 +28,7 @@ int main(int argc, const char * argv[]) {
             NSString *userInput = [InputHandler handle];
             // report current state of dice and score
             rollAgain = [gameController actionResult:userInput];
+            [gameController displayDice];
         }
     }
     return 0;

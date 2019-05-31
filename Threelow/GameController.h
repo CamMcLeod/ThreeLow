@@ -18,8 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 -(void) holdDie: (NSString *)diceIndexes;
 -(void) resetDice;
+-(void) rollDice;
 -(NSInteger)calculateScore;
 -(BOOL) actionResult: (NSString *) action;
+-(void) displayDice;
 
 @end
 

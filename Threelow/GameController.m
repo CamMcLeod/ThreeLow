@@ -50,8 +50,8 @@
 
 -(NSInteger)calculateScore {
     self.currentScore = 0;
-    for ( Dice * die in self.heldDice) {
-        if(!(die.currentValue == 3)) {
+    for ( Dice * die in self.allDice) {
+        if (die.currentValue != 3){
             self.currentScore += die.currentValue;
         }
     }
@@ -67,34 +67,12 @@
             // adds or removes die from hold depending on index given
             NSString *heldDice = commandWords[1];
             [self holdDie: heldDice];
-            //if there are held dice check for which ones...
-            if ([self.heldDice count]) {
-                // go through all dice
-                for (int i = 0; i < NUMDICE ; i++) {
-                    //if held dice has this dice from all dice object...
-                    if([self.heldDice containsObject: self.allDice[i] ]) {
-                        // log dice as held
-                        NSLog(@"[%d]", [self.allDice[i] currentValue]);
-                    } else {
-                        // else log as free
-                        NSLog(@"%d", [self.allDice[i] currentValue]);
-                    }
-                }
-            } else {
-                // else log all dice as free
-                for (int i = 0; i < NUMDICE ; i++) {
-                    NSLog(@"%d", [self.allDice[i] currentValue]);
-                }
-            }
         }
     }
     else if ([commandWords[0] isEqualToString:@"reset"]) {
         // unhold all dice
         [self resetDice];
         // print values
-        for (Dice *die in self.allDice) {
-            NSLog(@"%d ", die.currentValue);
-        }
     }
     else if ([commandWords[0] isEqualToString:@"roll"]) {
         // check hold list
@@ -102,20 +80,15 @@
             // go through all dice
             for (int i = 0; i < NUMDICE ; i++) {
                 //if held dice has this dice from all dice object...
-                if([self.heldDice containsObject: self.allDice[i] ]) {
+                if(![self.heldDice containsObject: self.allDice[i] ]) {
                     // log dice as held and hold
-                    NSLog(@"[%d]", [self.allDice[i] currentValue]);
-                } else {
-                    // else log as free and re-roll
                     [self.allDice[i] randomize];
-                    NSLog(@"%d", [self.allDice[i] currentValue]);
                 }
             }
         } else {
             // else log all dice as free and re-roll all
             for (int i = 0; i < NUMDICE ; i++) {
                 [self.allDice[i] randomize];
-                NSLog(@"%d", [self.allDice[i] currentValue]);
             }
         
         }
@@ -126,4 +99,35 @@
     return continueGame;
 }
 
+-(void) displayDice {
+    
+    NSMutableString *heldBuffer = [[NSMutableString alloc] init];
+    NSMutableString *allBuffer = [[NSMutableString alloc] init];
+    //buffer held row
+    if ([self.heldDice count]) {
+        // go through all dice]
+        for (int i = 0; i < NUMDICE ; i++) {
+            //if held dice has this dice from all dice object...
+            if([self.heldDice containsObject: self.allDice[i] ]) {
+                // put symbol in position
+                [heldBuffer appendString:[self.allDice[i] currentSymbol]];
+                [allBuffer appendString:@" "];
+            } else {
+                // else put space in position
+                [heldBuffer appendString:@" "];
+                [allBuffer appendString:[self.allDice[i] currentSymbol]];
+            }
+        }
+    } else {
+        // else log all dice as free and re-roll all
+        for (int i = 0; i < NUMDICE ; i++) {
+            [allBuffer appendString:[self.allDice[i] currentSymbol]];
+        }
+        
+    }
+    NSLog(@"Held dice:%@", heldBuffer);
+    NSLog(@"Free dice:%@", allBuffer);
+}
+
 @end
+
