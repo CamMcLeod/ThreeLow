@@ -10,13 +10,14 @@
 #import "Dice.h"
 #import "InputHandler.h"
 #import "GameController.h"
+#define NUMDICE 5
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
         BOOL rollAgain = YES;
         // dice symbols: 1: ⚀ 2: ⚁ 3: ⚂ 4: ⚃ 5: ⚄ 6: ⚅
-    
+        
         // initiate instance of gamecontroller with dice
         GameController *gameController = [[GameController alloc] init];
         NSLog(@"Threelow!!! \n---RULES---\ntype <roll> to roll again\ntype <hold ###> to hold or unhold dice with the corresponding index\ntype reset to unhold all dice");
@@ -25,39 +26,36 @@ int main(int argc, const char * argv[]) {
             
             // read user input to see if they want to hold and or roll again
             NSString *userInput = [InputHandler handle];
-            
-            if ([userInput hasPrefix: @"hold"]) {
-                if ([userInput length] >4) {
+            NSArray *commandWords = [userInput componentsSeparatedByString:@" "];
+            if ([commandWords[0] isEqualToString: @"hold"]) {
+                // check if user added numbers to command so doesn't break program
+                if([commandWords count] > 1) {
                     // adds or removes die from hold depending on index given
-                    NSString *heldDice = [userInput substringFromIndex: 5];
+                    NSString *heldDice = commandWords[1];
                     [gameController holdDie: heldDice];
-                    
-                    // prints out all dice showing holds
-                    
-                    NSArray *holdList = [gameController.heldDice allKeys];
-                    NSMutableString *holdString = [[NSMutableString alloc] init];
-                    
-                    for ( NSString * leString in holdList) {
-                        [holdString appendString:leString];
-                    }
-                    
-                    for (int i = 0; i < 5 ; i++) {
-                        if ([gameController.heldDice count]) {
-                            if ( [holdString localizedStandardContainsString: [NSString stringWithFormat: @"%d", i]]) {
-                                
+                    //if there are held dice check for which ones...
+                    if ([gameController.heldDice count]) {
+                        // go through all dice
+                        for (int i = 0; i < NUMDICE ; i++) {
+                            //if held dice has this dice from all dice object...
+                            if([gameController.heldDice containsObject: gameController.allDice[i] ]) {
+                                // log dice as held
                                 NSLog(@"[%d]", [gameController.allDice[i] currentValue]);
-                            }
-                            else {
+                            } else {
+                                // else log as free
                                 NSLog(@"%d", [gameController.allDice[i] currentValue]);
                             }
                         }
-                        else {
+                    } else {
+                        // else log all dice as free
+                        for (int i = 0; i < NUMDICE ; i++) {
                             NSLog(@"%d", [gameController.allDice[i] currentValue]);
                         }
                     }
                 }
+                NSLog(@"current score: %ld", [gameController calculateScore]);
             }
-            else if ([userInput compare: @"reset"] == NSOrderedSame) {
+            else if ([commandWords[0] isEqualToString:@"reset"]) {
                 // unhold all dice
                 [gameController resetDice];
                 // print values
@@ -65,28 +63,24 @@ int main(int argc, const char * argv[]) {
                     NSLog(@"%d ", die.currentValue);
                 }
             }
-            else if ([userInput compare: @"roll"] == NSOrderedSame) {
-                
+            else if ([commandWords[0] isEqualToString:@"roll"]) {
                 // check hold list
-                NSArray *holdList = [gameController.heldDice allKeys];
-                NSMutableString *holdString = [[NSMutableString alloc] init];
-                
-                for ( NSString * leString in holdList) {
-                    [holdString appendString:leString];
-                }
-                
-                for (int i = 0; i < 5 ; i++) {
-                    if ([gameController.heldDice count]) {
-                        if ( [holdString localizedStandardContainsString: [NSString stringWithFormat: @"%d", i]]) {
-                            
+                if ([gameController.heldDice count]) {
+                    // go through all dice
+                    for (int i = 0; i < NUMDICE ; i++) {
+                        //if held dice has this dice from all dice object...
+                        if([gameController.heldDice containsObject: gameController.allDice[i] ]) {
+                            // log dice as held and hold
                             NSLog(@"[%d]", [gameController.allDice[i] currentValue]);
-                        }
-                        else {
+                        } else {
+                            // else log as free and re-roll
                             [gameController.allDice[i] randomize];
                             NSLog(@"%d", [gameController.allDice[i] currentValue]);
                         }
                     }
-                    else {
+                } else {
+                    // else log all dice as free and re-roll all
+                    for (int i = 0; i < NUMDICE ; i++) {
                         [gameController.allDice[i] randomize];
                         NSLog(@"%d", [gameController.allDice[i] currentValue]);
                     }

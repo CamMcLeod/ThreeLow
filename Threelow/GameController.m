@@ -8,6 +8,7 @@
 
 #import "GameController.h"
 #import "Dice.h"
+#define NUMDICE 5
 
 @implementation GameController
 
@@ -16,11 +17,10 @@
         
         // initialize dice array and held dice set
         _allDice = [[NSMutableArray alloc] init];
-        _heldDice = [[NSMutableDictionary alloc] init];
-        _currentScore = 0;
+        _heldDice = [[NSMutableArray alloc] init];
         
         // make 5 instances of dice in game controller array
-        for(int i =0; i<5 ; i++) {
+        for(int i =0; i< NUMDICE; i++) {
             [self.allDice addObject: [[Dice alloc]init ]];
         }
 
@@ -30,13 +30,15 @@
 }
 
 -(void) holdDie: (NSString *)diceIndexes {
-    
-    for (int i = 0; i < 5 ; i++) {
+
+    for (int i = 0; i < NUMDICE; i++) {
+        
         if ([diceIndexes containsString: [NSString stringWithFormat: @"%d", i]]) {
-            if ([self.heldDice objectForKey: [NSString stringWithFormat: @"%d", i]]) {
-                [self.heldDice removeObjectForKey: [NSString stringWithFormat: @"%d", i]];
+            Dice * die = self.allDice[i];
+            if([self.heldDice containsObject: die ]) {
+                [self.heldDice removeObject: die];
             } else {
-                [self.heldDice setObject:self.allDice[i] forKey:[NSString stringWithFormat: @"%d", i]];
+                [self.heldDice addObject: self.allDice[i]];
             }
         }
     }
@@ -48,12 +50,17 @@
 
 -(NSInteger)calculateScore {
     self.currentScore = 0;
-    for ( NSString * key in self.heldDice) {
-        if ( !([[self.heldDice objectForKey:key] currentValue] == 3)) {
-            self.currentScore = self.currentScore + [[self.heldDice objectForKey:key] currentValue];
+    for ( Dice * die in self.heldDice) {
+        if(!(die.currentValue == 3)) {
+            self.currentScore += die.currentValue;
         }
     }
     return self.currentScore;
+}
+    
+-(NSArray *) actionResult: (NSString *) action {
+    
+    return @[@"1"];
 }
 
 @end

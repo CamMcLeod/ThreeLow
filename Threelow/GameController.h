@@ -13,13 +13,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface GameController : NSObject
 
 @property NSMutableArray *allDice;
-@property NSMutableDictionary *heldDice;
+@property NSMutableArray *heldDice;
 @property NSInteger currentScore;
 
 -(void) holdDie: (NSString *)diceIndexes;
 -(void) resetDice;
 -(NSInteger)calculateScore;
-    
+-(NSArray *) actionResult: (NSString *) action;
+
 @end
 
 NS_ASSUME_NONNULL_END
